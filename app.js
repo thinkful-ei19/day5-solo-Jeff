@@ -31,7 +31,6 @@ function generateShoppingItemsString(shoppingList) {
   console.log("Generating shopping list element");
 
   const items = shoppingList.map((item, index) => generateItemElement(item, index));
-  
   return items.join("");
 }
 
@@ -40,11 +39,17 @@ function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
   const shoppingListItemsString = generateShoppingItemsString(STORE.items);
-
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
 }
 
+function renderShoppingListParm(items) {
+  // render the shopping list in the DOM
+  console.log('`renderShoppingList` ran');
+  const shoppingListItemsString = generateShoppingItemsString(items);
+  // insert that HTML into the DOM
+  $('.js-shopping-list').html(shoppingListItemsString);
+}
 
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
@@ -111,10 +116,19 @@ function handleDeleteItemClicked() {
   });
 }
 function hideThemChecks(){
-  $("#checkItems").on('click',function(event){
-   console.log( STORE.items["checked"] = false)
+  $('input[type=radio][name=itemsType]').change(function(event){
+    
+    if(this.value === "checkItems"){
+      const filteredItems = STORE.items.filter(item => item.checked );
+      renderShoppingListParm(filteredItems)
+    }
+    else if(this.value ==="allItems"){
+      renderShoppingList();
+    }
+
   });
 }
+ 
 
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
