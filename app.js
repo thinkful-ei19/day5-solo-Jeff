@@ -7,7 +7,7 @@ const STORE = {
   {name: "milk", checked: true},
   {name: "bread", checked: false}
 ],
-showChecks:false
+filterMySearch:false
 };
 
 
@@ -21,6 +21,9 @@ function generateItemElement(item, itemIndex, template) {
         </button>
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
+        </button>
+        <button class="shopping-item-change js-item-change">
+            <span class="button-label">change</span>
         </button>
       </div>
     </li>`;
@@ -117,7 +120,7 @@ function handleDeleteItemClicked() {
 }
 function hideThemChecks(){
   $('input[type=radio][name=itemsType]').change(function(event){
-    
+    //  console.log(event)
     if(this.value === "checkItems"){
       const filteredItems = STORE.items.filter(item => item.checked );
       renderShoppingListParm(filteredItems)
@@ -128,6 +131,44 @@ function hideThemChecks(){
 
   });
 }
+
+function valOfSearch() {
+  // var input, filter, ul, li, a, i;
+  // input = document.getElementById("myInput");
+  $( ".js-shopping-list-entry" ).click(function(event){
+  
+// let filter = $(this).value.toUpperCase();
+let ul = $(".shopping-list js-shopping-list");
+let li = $('li');
+  for (i = 0; i < li.length; i++) {
+      li = li[i][0];
+      if (li.toUpperCase().indexOf(filter) > -1) {
+          li[i].style.display = "";
+      } else {
+          li[i].style.display = "none";
+
+      }
+  }
+});
+}
+//   // name="shopping-list-entry"
+  
+//   //this.value.toUpperCase();
+//   ul = document.getElementById("myUL");
+//   // <ul class="shopping-list js-shopping-list">
+//   li = ul.getElementsByTagName("li");
+//   // <li class="js-item-index-element" data-item-index="${itemIndex}">
+
+//   for (i = 0; i < li.length; i++) {
+//       a = li[i][0];
+//       if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+//           li[i].style.display = "";
+//       } else {
+//           li[i].style.display = "none";
+
+//       }
+//   }
+// }
  
 
 // this function will be our callback when the page loads. it's responsible for
@@ -140,7 +181,8 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   hideThemChecks();
-}
+  valOfSearch();
+};
 
 // when the page loads, call `handleShoppingList`
 $(handleShoppingList);
