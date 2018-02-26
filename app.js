@@ -120,10 +120,10 @@ function handleDeleteItemClicked() {
 }
 function hideThemChecks(){
   $('input[type=radio][name=itemsType]').change(function(event){
-    //  console.log(event)
+      // console.log(event)
     if(this.value === "checkItems"){
       const filteredItems = STORE.items.filter(item => item.checked );
-      renderShoppingListParm(filteredItems)
+      renderShoppingListParm(filteredItems);
     }
     else if(this.value ==="allItems"){
       renderShoppingList();
@@ -132,25 +132,25 @@ function hideThemChecks(){
   });
 }
 
-function valOfSearch() {
-  // var input, filter, ul, li, a, i;
-  // input = document.getElementById("myInput");
-  $( ".js-shopping-list-entry" ).click(function(event){
+// function valOfSearch() {
+//   // var input, filter, ul, li, a, i;
+//   // input = document.getElementById("myInput");
+//   $( ".js-shopping-list-entry" ).click(function(event){
   
-// let filter = $(this).value.toUpperCase();
-let ul = $(".shopping-list js-shopping-list");
-let li = $('li');
-  for (i = 0; i < li.length; i++) {
-      li = li[i][0];
-      if (li.toUpperCase().indexOf(filter) > -1) {
-          li[i].style.display = "";
-      } else {
-          li[i].style.display = "none";
+// // let filter = $(this).value.toUpperCase();
+// let ul = $(".shopping-list js-shopping-list");
+// let li = $('li');
+//   for (i = 0; i < li.length; i++) {
+//       li = li[i][0];
+//       if (li.toUpperCase().indexOf(filter) > -1) {
+//           li[i].style.display = "";
+//       } else {
+//           li[i].style.display = "none";
 
-      }
-  }
-});
-}
+//       }
+//   }
+// });
+//
 //   // name="shopping-list-entry"
   
 //   //this.value.toUpperCase();
@@ -171,6 +171,31 @@ let li = $('li');
 // }
  
 
+function searchForItems(word) {
+  const searching = STORE.items.filter( str => str.name.startsWith(word));
+  const newHtmlString = generateShoppingItemsString(searching);
+  //gen. new HTML
+  $('.js-shopping-list').html(newHtmlString);
+
+}
+
+function handleSearchedForItems() {
+   //get related user info from DOM
+  //change STORE
+  //render
+
+  $('.js-shopping-list-entry').keyup(function() {
+    const searchWord = $('.js-shopping-list-entry').val();
+    if(searchWord === '') {
+      renderShoppingList();
+    } else {
+     searchForItems(searchWord);
+  
+    }
+  });
+}
+
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -181,7 +206,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   hideThemChecks();
-  valOfSearch();
+  handleSearchedForItems();
 };
 
 // when the page loads, call `handleShoppingList`
